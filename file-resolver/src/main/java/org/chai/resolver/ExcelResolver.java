@@ -18,10 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ExcelResolver {
@@ -41,7 +38,7 @@ public class ExcelResolver {
             return;
         }
         String executeDirStr = args[0];
-//        String executeDirStr= "D:\\让菜菜更轻松2.0";
+//        String executeDirStr= "D:\\菜轻松\\菜轻松1.0";
         ExcelResolver excelResolver = new ExcelResolver();
         excelResolver.setInputDirStr(executeDirStr + "\\input");
         excelResolver.setCodeDirStr(executeDirStr + "\\code");
@@ -133,17 +130,19 @@ public class ExcelResolver {
     }
 
     private void resolveFilter() {
-//        filterOutput("推广单元名称", "2组收藏加购","壹者二组", "崔","直营");
-//        filterOutput("推广单元名称","1组收藏加购","壹者");
-//        filterOutput("推广单元名称", "凯丽收藏加购","凯丽");
-//        filterOutput("推广单元名称", "德收藏加购","德");
-//        filterOutput("推广单元名称", "剧星收藏加购", "剧星");
-        filterRemove("订单状态", "已失效", "已失效");
-        filterOutput("推广单元名称", "2组收藏加购","壹者二组", "崔","直营");
+//        filterRemove("订单状态", "已失效", "已失效");
+//        filterOutput("推广位名称", "2组","壹者二组", "崔", "直营");
+//        filterOutput("推广位名称","1组","壹者");
+//        filterOutput("推广位名称", "凯丽","凯丽");
+//        filterOutput("推广位名称", "德","德");
+//        filterOutput("推广位名称", "剧星", "剧星");
+//        filterOutput("推广位名称", "418薇亚", "418薇亚");
+        filterOutput("推广单元名称", "2组收藏加购","壹者二组", "崔", "直营");
         filterOutput("推广单元名称","1组收藏加购","壹者");
         filterOutput("推广单元名称", "凯丽收藏加购","凯丽");
         filterOutput("推广单元名称", "德收藏加购","德");
         filterOutput("推广单元名称", "剧星收藏加购", "剧星");
+        filterOutput("推广单元名称", "418薇亚", "418薇亚");
     }
 
     private void filterOutput(String columnName, String outputName, String... keyWords) {
@@ -152,7 +151,7 @@ public class ExcelResolver {
         }
         List<Map<String, String>> outputRows = new ArrayList<>();
         for (String keyWord : keyWords) {
-            List<Map<String, String>> filterRows = result.stream().filter(row -> row.get(columnName).contains(keyWord)).collect(Collectors.toList());
+            List<Map<String, String>> filterRows = result.stream().filter(Objects::nonNull).filter(row -> row.get(columnName).contains(keyWord)).collect(Collectors.toList());
             result = result.stream().filter(row -> !row.get(columnName).contains(keyWord)).collect(Collectors.toList());
             outputRows.addAll(filterRows);
         }
