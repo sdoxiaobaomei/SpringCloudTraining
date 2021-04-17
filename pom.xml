@@ -8,6 +8,7 @@
         <module>AppServer</module>
         <module>LearningCode</module>
         <module>file-resolver</module>
+        <module>java-gui</module>
     </modules>
 
     <parent>

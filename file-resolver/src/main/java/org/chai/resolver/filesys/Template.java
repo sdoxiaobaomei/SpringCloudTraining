@@ -1,7 +1,9 @@
 package org.chai.resolver.filesys;
 
+import org.chai.resolver.ExcelFileContent;
+
+import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 final public class Template extends FileSystem{
     private String name;
@@ -19,6 +21,16 @@ final public class Template extends FileSystem{
     @Override
     void createDirectories() {
         createFilesSystem(templatePath);
+    }
+
+    @Override
+    File[] readFiles() {
+        return new File(templateDir).listFiles();
+    }
+
+    @Override
+    public ExcelFileContent readFileContent(File file) {
+        return new ExcelFileContent();
     }
 
     public String getTemplateDir() {

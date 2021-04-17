@@ -1,5 +1,8 @@
 package org.chai.resolver.filesys;
 
+import org.chai.resolver.FileContent;
+
+import java.io.File;
 import java.nio.file.Path;
 
 public final class Bakcup extends FileSystem{
@@ -17,6 +20,12 @@ public final class Bakcup extends FileSystem{
     void createDirectories() {
         createFilesSystem(backupPath);
     }
+
+    @Override
+    File[] readFiles() {
+        return new File(backupDir).listFiles();
+    }
+
 
     public String getBackupDir() {
         return backupDir;

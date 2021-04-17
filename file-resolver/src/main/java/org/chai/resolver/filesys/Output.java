@@ -1,5 +1,8 @@
 package org.chai.resolver.filesys;
 
+import org.chai.resolver.FileContent;
+
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -17,6 +20,11 @@ final public class Output extends FileSystem {
     @Override
     void createDirectories() {
         createFilesSystem(outputPath);
+    }
+
+    @Override
+    File[] readFiles() {
+        return new File(outputDir).listFiles();
     }
 
     public String getOutputDir() {

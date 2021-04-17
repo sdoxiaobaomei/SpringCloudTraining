@@ -1,7 +1,10 @@
 package org.chai.resolver.filesys;
 
+import org.chai.resolver.ExcelFileContent;
+
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 final public class Input extends FileSystem {
     private static final String INPUT_FOLDER_NAME = "input";
@@ -17,6 +20,17 @@ final public class Input extends FileSystem {
     @Override
     void createDirectories() {
         createFilesSystem(inputPath);
+    }
+
+    @Override
+    public File[] readFiles() {
+        return new File(inputDir).listFiles();
+    }
+
+    @Override
+    public ExcelFileContent readFileContent(File file) {
+
+        return new ExcelFileContent();
     }
 
     public String getInputDir() {

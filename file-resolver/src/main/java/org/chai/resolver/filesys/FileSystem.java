@@ -1,5 +1,8 @@
 package org.chai.resolver.filesys;
 
+import org.chai.resolver.FileContent;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -9,7 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public abstract class FileSystem {
-    protected String rootDir = "C:/让菜菜更轻松";
+    protected String rootDir = "D:/让菜菜更轻松";
 
     /**
      * 初始化
@@ -20,6 +23,12 @@ public abstract class FileSystem {
      * 创建目录
      */
     abstract void createDirectories();
+
+    /**
+     * 获取目录下的文件列表
+     * @return 文件列表数组
+     */
+    abstract File[] readFiles();
 
     public FileSystem() {
         initRootDir();
@@ -50,5 +59,9 @@ public abstract class FileSystem {
         } catch (IOException e) {
             System.out.println("创建输出文件目录失败：" + e.getLocalizedMessage());
         }
+    }
+
+    public FileContent readFileContent(File file) {
+        return new DefaultFileContent();
     }
 }
