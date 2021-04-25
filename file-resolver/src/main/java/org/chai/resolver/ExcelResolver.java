@@ -132,17 +132,15 @@ public class ExcelResolver {
     private void resolveFilter() {
 //        filterRemove("订单状态", "已失效", "已失效");
 //        filterOutput("推广位名称", "2组","壹者二组", "崔", "直营");
-//        filterOutput("推广位名称","1组","壹者");
+//        filterOutput("推广位名称","1组","壹者", "418薇亚");
 //        filterOutput("推广位名称", "凯丽","凯丽");
 //        filterOutput("推广位名称", "德","德");
 //        filterOutput("推广位名称", "剧星", "剧星");
-//        filterOutput("推广位名称", "418薇亚", "418薇亚");
         filterOutput("推广单元名称", "2组收藏加购","壹者二组", "崔", "直营");
-        filterOutput("推广单元名称","1组收藏加购","壹者");
+        filterOutput("推广单元名称","1组收藏加购","壹者", "418薇亚");
         filterOutput("推广单元名称", "凯丽收藏加购","凯丽");
         filterOutput("推广单元名称", "德收藏加购","德");
         filterOutput("推广单元名称", "剧星收藏加购", "剧星");
-        filterOutput("推广单元名称", "418薇亚", "418薇亚");
     }
 
     private void filterOutput(String columnName, String outputName, String... keyWords) {
