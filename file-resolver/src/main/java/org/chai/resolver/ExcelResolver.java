@@ -11,6 +11,10 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.chai.resolver.filesys.Backup;
+import org.chai.resolver.filesys.Input;
+import org.chai.resolver.filesys.Output;
+import org.chai.resolver.filesys.Template;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -39,6 +43,10 @@ public class ExcelResolver {
         }
         String executeDirStr = args[0];
 //        String executeDirStr= "D:\\菜轻松\\菜轻松1.0";
+//        Input input = new Input();
+//        Output output = new Output();
+//        Template template = new Template();
+//        Backup backup = new Backup();
         ExcelResolver excelResolver = new ExcelResolver();
         excelResolver.setInputDirStr(executeDirStr + "\\input");
         excelResolver.setCodeDirStr(executeDirStr + "\\code");
@@ -130,17 +138,17 @@ public class ExcelResolver {
     }
 
     private void resolveFilter() {
-//        filterRemove("订单状态", "已失效", "已失效");
-//        filterOutput("推广位名称", "2组","壹者二组", "崔", "直营");
-//        filterOutput("推广位名称","1组","壹者", "418薇亚");
-//        filterOutput("推广位名称", "凯丽","凯丽");
-//        filterOutput("推广位名称", "德","德");
-//        filterOutput("推广位名称", "剧星", "剧星");
-        filterOutput("推广单元名称", "2组收藏加购","壹者二组", "崔", "直营");
-        filterOutput("推广单元名称","1组收藏加购","壹者", "418薇亚");
-        filterOutput("推广单元名称", "凯丽收藏加购","凯丽");
-        filterOutput("推广单元名称", "德收藏加购","德");
-        filterOutput("推广单元名称", "剧星收藏加购", "剧星");
+        filterRemove("订单状态", "已失效", "已失效");
+        filterOutput("推广位名称", "2组","壹者二组", "崔", "直营");
+        filterOutput("推广位名称","1组","壹者", "418薇亚");
+        filterOutput("推广位名称", "凯丽","凯丽");
+        filterOutput("推广位名称", "德","德");
+        filterOutput("推广位名称", "达人", "达人");
+//        filterOutput("推广单元名称", "2组收藏加购","壹者二组", "崔", "直营");
+//        filterOutput("推广单元名称","1组收藏加购","壹者", "418薇亚");
+//        filterOutput("推广单元名称", "凯丽收藏加购","凯丽");
+//        filterOutput("推广单元名称", "德收藏加购","德");
+//        filterOutput("推广单元名称", "达人收藏加购", "达人");
     }
 
     private void filterOutput(String columnName, String outputName, String... keyWords) {
@@ -163,7 +171,7 @@ public class ExcelResolver {
     }
 
     private void exportXls(List<Map<String, String>> rows, String outputName) {
-        Path outputPath = OUTPUT_DIR_PATH.resolve(outputName + "_" + TimeStampUtil.getYesterdayYearMonthDay() + ".xls");
+        Path outputPath = OUTPUT_DIR_PATH.resolve(outputName + "_" + TimeStampUtil.getTimeStamp() + ".xls");
         //创建工作薄对象
         HSSFWorkbook workbook=new HSSFWorkbook();
         //创建工作表对象

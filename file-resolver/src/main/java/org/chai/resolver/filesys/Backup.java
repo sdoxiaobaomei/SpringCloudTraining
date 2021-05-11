@@ -2,7 +2,7 @@ package org.chai.resolver.filesys;
 
 import java.nio.file.Path;
 
-public final class Bakcup extends FileSystem{
+public final class Backup extends FileSystem{
     private static final String BACKUP_FOLDER_NAME = "backup";
     private String backupDir;
     private Path backupPath;
