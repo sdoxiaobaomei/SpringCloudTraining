@@ -138,18 +138,19 @@ public class ExcelResolver {
     }
 
     private void resolveFilter() {
-        filterRemove("订单状态", "已失效", "已失效");
-        filterOutput("推广位名称", "2组","壹者二组", "崔", "直营");
-        filterOutput("推广位名称","1组","壹者", "418薇亚");
-        filterOutput("推广位名称", "凯丽","凯丽");
-        filterOutput("推广位名称", "德","德");
-        filterOutput("推广位名称", "达人", "达人", "618开屏");
-        filterOutput("推广位名称", "三德达人", "德达人");
-//        filterOutput("推广单元名称", "2组收藏加购","壹者二组", "崔", "直营");
-//        filterOutput("推广单元名称","1组收藏加购","壹者", "418薇亚");
-//        filterOutput("推广单元名称", "凯丽收藏加购","凯丽");
-//        filterOutput("推广单元名称", "德收藏加购","德");
-//        filterOutput("推广单元名称", "达人收藏加购", "达人");
+//        filterRemove("订单状态", "已失效", "已失效");
+//        filterOutput("推广位名称", "2组","壹者二组", "崔", "直营");
+//        filterOutput("推广位名称","1组","壹者", "418薇亚");
+//        filterOutput("推广位名称", "凯丽","凯丽");
+//        filterOutput("推广位名称", "德","德");
+//        filterOutput("推广位名称", "达人", "达人", "618开屏");
+//        filterOutput("推广位名称", "三德达人", "德达人");
+        filterOutput("推广单元名称", "2组收藏加购","壹者二组", "崔", "直营");
+        filterOutput("推广单元名称","1组收藏加购","壹者", "418薇亚");
+        filterOutput("推广单元名称", "凯丽收藏加购","凯丽");
+        filterOutput("推广单元名称", "德收藏加购","德");
+        filterOutput("推广单元名称", "达人收藏加购", "达人", "618开屏");
+        filterOutput("推广位名称", "三德达人收藏加购", "德达人");
     }
 
     private void filterOutput(String columnName, String outputName, String... keyWords) {
@@ -172,7 +173,7 @@ public class ExcelResolver {
     }
 
     private void exportXls(List<Map<String, String>> rows, String outputName) {
-        Path outputPath = OUTPUT_DIR_PATH.resolve(outputName + "_" + TimeStampUtil.getTimeStamp() + ".xls");
+        Path outputPath = OUTPUT_DIR_PATH.resolve(outputName + "_" + TimeStampUtil.getYesterdayYearMonthDay() + ".xls");
         //创建工作薄对象
         HSSFWorkbook workbook=new HSSFWorkbook();
         //创建工作表对象
