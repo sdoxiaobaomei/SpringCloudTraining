@@ -78,7 +78,7 @@ public class ExcelResolver {
                     e.printStackTrace();
                 }
             }else {
-                return;
+                continue;
             }
             try {
                 if (!Files.isDirectory(OUTPUT_DIR_PATH)) {
