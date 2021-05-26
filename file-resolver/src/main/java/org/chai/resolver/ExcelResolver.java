@@ -146,8 +146,9 @@ public class ExcelResolver {
 //        filterOutput("推广位名称", "达人", "达人", "618开屏");
 //        filterOutput("推广位名称", "三德达人", "德达人");
         filterOutput("推广单元名称", "2组收藏加购","壹者二组", "崔", "直营");
-        filterOutput("推广单元名称","1组收藏加购","壹者", "418薇亚");
+        filterOutput("推广单元名称", "1组收藏加购","壹者", "418薇亚");
         filterOutput("推广单元名称", "凯丽收藏加购","凯丽");
+        filterOutput("推广单元名称", "嗖扬达人收藏加购", "SY达人");
         filterOutput("推广单元名称", "三德达人收藏加购", "德达人");
         filterOutput("推广单元名称", "德收藏加购","德");
         filterOutput("推广单元名称", "达人收藏加购", "达人", "618开屏");
@@ -159,8 +160,8 @@ public class ExcelResolver {
         }
         List<Map<String, String>> outputRows = new ArrayList<>();
         for (String keyWord : keyWords) {
-            List<Map<String, String>> filterRows = result.stream().filter(Objects::nonNull).filter(row -> row.get(columnName).contains(keyWord)).collect(Collectors.toList());
-            result = result.stream().filter(row -> !row.get(columnName).contains(keyWord)).collect(Collectors.toList());
+            List<Map<String, String>> filterRows = result.stream().filter(Objects::nonNull).filter(row -> Optional.ofNullable(row.get(columnName)).orElse("").trim().contains(keyWord)).collect(Collectors.toList());
+            result.removeAll(filterRows);
             outputRows.addAll(filterRows);
         }
         exportXls(outputRows, outputName);
