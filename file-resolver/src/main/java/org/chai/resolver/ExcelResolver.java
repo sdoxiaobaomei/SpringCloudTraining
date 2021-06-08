@@ -142,15 +142,10 @@ public class ExcelResolver {
         filterOutput("推广位名称", "2组","壹者二组", "崔", "直营");
         filterOutput("推广位名称","1组","壹者", "418薇亚");
         filterOutput("推广位名称", "凯丽","凯丽");
-        filterOutput("推广位名称", "SY达人", "嗖扬达人");
+        filterOutput("推广位名称", "嗖扬达人", "SY达人");
         filterOutput("推广位名称", "三德达人", "德达人");
         filterOutput("推广位名称", "德","德");
         filterOutput("推广位名称", "达人", "达人", "618开屏");
-//        filterOutput("推广单元名称", "2组收藏加购","壹者二组", "崔", "直营");
-//        filterOutput("推广单元名称","1组收藏加购","壹者", "418薇亚");
-//        filterOutput("推广单元名称", "凯丽收藏加购","凯丽");
-//        filterOutput("推广单元名称", "德收藏加购","德");
-//        filterOutput("推广单元名称", "达人收藏加购", "达人");
     }
 
     private void filterOutput(String columnName, String outputName, String... keyWords) {
