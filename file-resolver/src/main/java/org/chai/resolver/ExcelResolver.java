@@ -140,11 +140,11 @@ public class ExcelResolver {
     private void resolveFilter() {
         filterRemove("订单状态", "已失效", "已失效");
         filterOutput("推广位名称", "2组","壹者二组", "崔", "直营");
-        filterOutput("推广位名称","1组","壹者", "418薇亚");
         filterOutput("推广位名称", "嗖扬达人", "SY达人");
         filterOutput("推广位名称", "德","德");
         filterOutput("推广位名称", "达人", "达人", "618开屏", "729壹者达人测试链接");
         filterOutput("推广位名称", "冰晶绿_数智", "冰晶绿_数智");
+        filterOutput("推广位名称","1组","壹者", "418薇亚");
     }
 
     private void filterOutput(String columnName, String outputName, String... keyWords) {
