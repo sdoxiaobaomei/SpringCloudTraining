@@ -142,7 +142,7 @@ public class ExcelResolver {
         filterOutput("推广单元名称", "1组收藏加购","壹者", "418薇亚");
         filterOutput("推广单元名称", "嗖扬达人收藏加购", "SY达人");
         filterOutput("推广单元名称", "德收藏加购","德");
-        filterOutput("推广单元名称", "达人收藏加购", "达人", "618开屏");
+        filterOutput("推广单元名称", "达人收藏加购", "达人", "618开屏", "729壹者达人测试链接");
         filterOutput("推广单元名称", "冰晶绿_数智收藏加购", "冰晶绿_数智");
     }
 
