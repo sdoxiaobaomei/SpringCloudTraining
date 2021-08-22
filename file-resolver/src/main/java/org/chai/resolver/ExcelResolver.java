@@ -145,6 +145,7 @@ public class ExcelResolver {
         filterOutput("推广单元名称", "达人收藏加购", "达人", "618开屏", "729壹者达人测试链接");
         filterOutput("推广单元名称", "冰晶绿_数智收藏加购", "冰晶绿_数智");
         filterOutput("推广单元名称", "1组收藏加购","壹者", "418薇亚");
+        filterOutput("推广单元名称", "邦盟收藏加购","邦盟信息流");
     }
 
     private void filterOutput(String columnName, String outputName, String... keyWords) {
