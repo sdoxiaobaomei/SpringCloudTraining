@@ -139,7 +139,6 @@ public class ExcelResolver {
 
     private void resolveFilter() {
         filterOutput("推广单元名称", "2组收藏加购","壹者二组", "崔", "直营");
-        filterOutput("推广单元名称", "SY达人");
         filterOutput("推广单元名称", "博观达人收藏加购", "804博观达人", "博观定金达人");
         filterOutput("推广单元名称", "德收藏加购","德");
         filterOutput("推广单元名称", "达人收藏加购", "达人", "618开屏", "729壹者达人测试链接");
