@@ -29,8 +29,9 @@ public class ExcelResolver {
 
 
     private List<Map<String, String>> result = new ArrayList<>();
-    private final static String TIMESTAMP = TimeStampUtil.getTimeStamp();
+    private final static String TIMESTAMP = TimeStampUtil.getTimeStamp("yyyyMMdd-HHmmss");
     private final static Path OUTPUT_DIR_PATH = Paths.get("output/", TIMESTAMP);
+    private boolean isYesterday = false;
     private String[] title = {""};
     private String codeDirStr = "";
     private String inputDirStr = "";
@@ -42,12 +43,14 @@ public class ExcelResolver {
             return;
         }
         String executeDirStr = args[0];
+
 //        String executeDirStr= "D:\\菜轻松\\菜轻松1.0";
 //        Input input = new Input();
 //        Output output = new Output();
 //        Template template = new Template();
 //        Backup backup = new Backup();
         ExcelResolver excelResolver = new ExcelResolver();
+        excelResolver.setYesterday(Boolean.parseBoolean(args[1]));
         excelResolver.setInputDirStr(executeDirStr + "\\input");
         excelResolver.setCodeDirStr(executeDirStr + "\\code");
         excelResolver.setBackupDirStr(executeDirStr + "\\backup");
@@ -168,7 +171,11 @@ public class ExcelResolver {
     }
 
     private void exportXls(List<Map<String, String>> rows, String outputName) {
-        Path outputPath = OUTPUT_DIR_PATH.resolve(outputName + "_" + TimeStampUtil.getTimeStamp() + ".xls");
+        String outputFileName = outputName + "_" + TimeStampUtil.getTimeStamp("yyyyMMdd-HHmm") + ".xls";
+        if (isYesterday) {
+            outputFileName = outputName + "_" + TimeStampUtil.getYesterdayYearMonthDay("yyyyMMdd") + ".xls";
+        }
+        Path outputPath = OUTPUT_DIR_PATH.resolve(outputFileName);
         //创建工作薄对象
         HSSFWorkbook workbook=new HSSFWorkbook();
         //创建工作表对象
@@ -359,5 +366,13 @@ public class ExcelResolver {
 
     public void setTemplateDirStr(String templateDirStr) {
         this.templateDirStr = templateDirStr;
+    }
+
+    public void setYesterday(boolean yesterday) {
+        isYesterday = yesterday;
+    }
+
+    public boolean isYesterday() {
+        return isYesterday;
     }
 }
