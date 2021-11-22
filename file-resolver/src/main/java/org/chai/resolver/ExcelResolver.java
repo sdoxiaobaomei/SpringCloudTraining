@@ -147,7 +147,7 @@ public class ExcelResolver {
         filterOutput("推广位名称", "客户自己的达人", "KS达人", "邦盟达人");
         filterOutput("推广位名称", "德","德");
         filterOutput("推广位名称", "达人", "达人", "618开屏", "729壹者达人测试链接");
-        filterOutput("推广位名称", "冰晶绿_数智", "冰晶绿_数智");
+//        filterOutput("推广位名称", "冰晶绿_数智", "冰晶绿_数智");
         filterOutput("推广位名称","1组","壹者", "418薇亚");
     }
 
