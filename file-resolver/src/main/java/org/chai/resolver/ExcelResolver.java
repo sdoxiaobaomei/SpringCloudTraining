@@ -39,18 +39,20 @@ public class ExcelResolver {
     private String templateDirStr = "";
 
     public static void main(String[] args) {
-        if (args == null || args.length == 0) {
-            return;
-        }
-        String executeDirStr = args[0];
+//        if (args == null || args.length == 0) {
+//            return;
+//        }
+//        String executeDirStr = args[0];
+//        boolean isYesterday = Boolean.parseBoolean(args[1]);
+        String executeDirStr= "D:\\菜轻松\\菜轻松1.0";
+        boolean isYesterday = false;
 
-//        String executeDirStr= "D:\\菜轻松\\菜轻松1.0";
 //        Input input = new Input();
 //        Output output = new Output();
 //        Template template = new Template();
 //        Backup backup = new Backup();
         ExcelResolver excelResolver = new ExcelResolver();
-        excelResolver.setYesterday(Boolean.parseBoolean(args[1]));
+        excelResolver.setYesterday(isYesterday);
         excelResolver.setInputDirStr(executeDirStr + "\\input");
         excelResolver.setCodeDirStr(executeDirStr + "\\code");
         excelResolver.setBackupDirStr(executeDirStr + "\\backup");
