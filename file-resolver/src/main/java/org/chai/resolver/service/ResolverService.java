@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.List;
 
 @Service
-public interface resolverService {
+public interface ResolverService {
 
-	void resolveOrder(Boolean isYesterday, List<File> inputFileList);
+	void resolveOrder(Boolean isYesterday);
 }

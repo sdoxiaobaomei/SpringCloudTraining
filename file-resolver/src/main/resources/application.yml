@@ -1,2 +1,3 @@
-server:
-  port: 9000
+multipart:
+  maxFileSize: 500mb
+  maxRequestSoze: 500mb

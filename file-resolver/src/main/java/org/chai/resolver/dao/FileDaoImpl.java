@@ -12,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.chai.resolver.TimeStampUtil;
+import org.chai.resolver.entity.ResolverResultSet;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -19,32 +20,31 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
 public class FileDaoImpl implements FileDao{
-	private String[] title = {""};
-	private List<Map<String, String>> result = new ArrayList<>();
+//	private String[] title = {""};
+//	private List<Map<String, String>> result = new ArrayList<>();
 	private final static String TIMESTAMP = TimeStampUtil.getTimeStamp("yyyyMMdd-HHmmss");
 	private final static Path OUTPUT_DIR_PATH = Paths.get("output/", TIMESTAMP);
 
 	@Override
-	public List<Map<String, String>> readInputFile(File inputFile) {
+	public ResolverResultSet readInputFile(File inputFile) {
+		ResolverResultSet resultSet = new ResolverResultSet();
 		String fileName = inputFile.getName();
 		String inputFilePathStr = inputFile.getAbsolutePath();
 
 		try {
 			if (fileName.contains("xlsx")) {
-				readXlsx(inputFilePathStr);
+				resultSet = readXlsx(inputFilePathStr);
 			}else if (fileName.contains("xls")){
-				readXls(inputFilePathStr);
+				resultSet = readXls(inputFilePathStr);
 			}else if (fileName.contains("csv")) {
-				readCsv(inputFilePathStr);
+				resultSet = readCsv(inputFilePathStr);
 			}else {
-				return result;
+				return resultSet;
 			}
 		} catch (IOException e) {
 			System.out.println("读取[" + fileName + "]出错：" + e.getCause());
@@ -57,16 +57,44 @@ public class FileDaoImpl implements FileDao{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return resultSet;
 	}
 
-	private void readCsv(String path) throws IOException {
+	@Override
+	public void writeOutputFile(Path outputPath, HSSFWorkbook workbook) {
+		try {
+			if (!Files.exists(outputPath.getParent())) {
+				Files.createDirectories(outputPath.getParent());
+			}
+		} catch (IOException e) {
+			System.out.println("输出文件"+outputPath+"创建失败 " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		try (FileOutputStream outputStream = new FileOutputStream(outputPath.toString())){
+			System.out.println("开始输出文件：" + outputPath.getFileName());
+			workbook.write(outputStream);
+			System.out.println("输出文件结束！");
+		} catch (IOException e) {
+			System.out.println("输出文件失败" + e.getCause());
+		}
+	}
+
+	@Override
+	public void moveFile(Path source, Path destination, String fileName) {
+
+	}
+
+	private ResolverResultSet readCsv(String path) throws IOException {
+		ResolverResultSet resultSet = new ResolverResultSet();
+		String[] title;
 		InputStream is = new FileInputStream(path);
 		CsvReader csvReader = new CsvReader(is, StandardCharsets.UTF_8);
 		csvReader.readHeaders();
 		String[] headers = csvReader.getHeaders();
 		title = headers.clone();
 		title[0] = title[0].replaceAll("\ufeff", "");
+		resultSet.setHeader(title);
 		while (csvReader.readRecord()) {
 			Map<String, String> map = new HashMap<>();
 			for (String key : headers) {
@@ -75,12 +103,14 @@ public class FileDaoImpl implements FileDao{
 				key = key.replaceAll("\uFEFF", "");
 				map.put(key, value);
 			}
-			result.add(map);
+			resultSet.add(map);
 		}
 		csvReader.close();
+		return resultSet;
 	}
 
-	private void readXlsx(String path) throws IOException {
+	private ResolverResultSet readXlsx(String path) throws IOException {
+		ResolverResultSet resultSet = new ResolverResultSet();
 		InputStream is = new FileInputStream(path);
 		// HSSFWorkbook 标识整个excel
 		XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
@@ -99,6 +129,7 @@ public class FileDaoImpl implements FileDao{
 					title[y] = getStringVal(cell).replaceAll("\ufeff", "");
 				}
 			}
+			resultSet.setHeader(title);
 			// 遍历当前sheet中的所有行
 			for (int j = 1; j < sheet.getLastRowNum() + 1; j++) {
 				row = sheet.getRow(j);
@@ -111,15 +142,18 @@ public class FileDaoImpl implements FileDao{
 					// log.info(JSON.toJSONString(key));
 					m.put(key, getStringVal(cell));
 				}
-				result.add(m);
+				resultSet.add(m);
 			}
 		}
+		return resultSet;
 	}
 
-	private void readXls(String path) throws IOException {
+	private ResolverResultSet readXls(String path) throws IOException {
+		ResolverResultSet resultSet = new ResolverResultSet();
 		InputStream is = new FileInputStream(path);
 		// HSSFWorkbook 标识整个excel
 		HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
+		String[] title={""};
 		int size = hssfWorkbook.getNumberOfSheets();
 		if (size == 1) {
 			HSSFRow row = null;
@@ -134,6 +168,7 @@ public class FileDaoImpl implements FileDao{
 					title[y] = getStringVal(cell);
 				}
 			}
+			resultSet.setHeader(title);
 			// 遍历当前sheet中的所有行
 			for (int j = 1; j < sheet.getLastRowNum() + 1; j++) {
 				row = sheet.getRow(j);
@@ -145,10 +180,12 @@ public class FileDaoImpl implements FileDao{
 					// log.info(JSON.toJSONString(key));
 					m.put(key, getStringVal(cell));
 				}
-				result.add(m);
+				resultSet.add(m);
 			}
 		}
+		return resultSet;
 	}
+
 	private static String getStringVal(CellBase cell) {
 		if (cell == null) {
 			return "";
