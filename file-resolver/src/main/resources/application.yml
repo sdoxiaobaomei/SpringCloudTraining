@@ -1,3 +1,5 @@
 multipart:
   maxFileSize: 500mb
   maxRequestSoze: 500mb
+output:
+  path: C:\\file_resolver\\output
