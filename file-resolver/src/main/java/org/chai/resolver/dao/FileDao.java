@@ -5,9 +5,8 @@ import org.chai.resolver.entity.ResolverResultSet;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
 
 @Component
 public interface FileDao {

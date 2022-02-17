@@ -8,5 +8,5 @@ import java.util.List;
 @Service
 public interface ResolverService {
 
-	void resolveOrder(Boolean isYesterday);
+	void resolveOrder(Boolean isYesterday) throws Exception;
 }

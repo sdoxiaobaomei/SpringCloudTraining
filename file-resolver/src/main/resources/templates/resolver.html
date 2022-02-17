@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Resolver</title>
+
 </head>
 <body>
 <form action="/resolve" method="post" enctype="multipart/form-data">
@@ -12,6 +13,9 @@
     昨日：
     <input type="radio" name="isYesterdayParam" value="true" />
     <button type="submit">运行</button>
+    <div id="counter">
+        Counter: {{ counter }}
+    </div>
 </form>
 </body>
 </html>

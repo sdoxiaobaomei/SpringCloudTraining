@@ -7,6 +7,7 @@ import org.chai.resolver.TimeStampUtil;
 import org.chai.resolver.dao.FileDao;
 import org.chai.resolver.entity.ResolverResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -20,23 +21,24 @@ import java.util.stream.Collectors;
 
 @Component
 public class ResolverServiceImpl implements ResolverService {
-//	private final static String TIMESTAMP = TimeStampUtil.getTimeStamp("yyyyMMdd-HHmmss");
-	private final static Path OUTPUT_DIR_PATH = Paths.get("C:\\file_resolver\\output/");
+	private final static String TIMESTAMP = TimeStampUtil.getTimeStamp("yyyyMMdd-HHmmss");
+	private final static Path OUTPUT_DIR_PATH = Paths.get("C:\\file_resolver\\output\\");
 	private String inputDirStr = "C:\\file_resolver\\input";
 	private String backupDirStr = "C:\\file_resolver\\backup";
 	@Autowired
 	FileDao fileDao;
 	private Boolean isYesterday;
 
+
 	@Override
-	public void resolveOrder(Boolean isYesterday) {
+	public void resolveOrder(Boolean isYesterday) throws Exception {
 		File inputDir = new File(inputDirStr);
 		if (!inputDir.exists()) {
 			boolean mkdirs = inputDir.mkdirs();
 		}
 		File[] inputFileList = inputDir.listFiles();
 		if (inputFileList == null) {
-			return;
+			throw new Exception("解析文件失败， 未找到输入文件");
 		}
 		this.isYesterday = isYesterday;
 		ResolverResultSet resultSet = new ResolverResultSet();
@@ -53,6 +55,7 @@ public class ResolverServiceImpl implements ResolverService {
 		} catch (IOException e) {
 			System.out.println("移动文件失败：" + e.getLocalizedMessage());
 		}
+
 	}
 	private void resolveFilter(ResolverResultSet resultSet) {
 		filterRemove(resultSet, "订单状态", "已失效", "已失效");
@@ -108,7 +111,7 @@ public class ResolverServiceImpl implements ResolverService {
 		if (isYesterday) {
 			outputFileName = outputName + "_" + TimeStampUtil.getYesterdayYearMonthDay("yyyyMMdd") + ".xls";
 		}
-		Path outputPath = OUTPUT_DIR_PATH.resolve(timeStamp).resolve(outputFileName);
+		Path outputPath = OUTPUT_DIR_PATH.resolve(TIMESTAMP).resolve(outputFileName);
 
 		//创建工作薄对象
 		HSSFWorkbook workbook=new HSSFWorkbook();

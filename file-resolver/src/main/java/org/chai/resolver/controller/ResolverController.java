@@ -9,11 +9,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,8 +44,13 @@ public class ResolverController {
 	@ResponseBody
 	public String resolve(String isYesterdayParam) {
 		Boolean isYesterday = Boolean.valueOf(isYesterdayParam);
-		resolverService.resolveOrder(isYesterday);
-		return "解析成功";
+		try {
+			resolverService.resolveOrder(isYesterday);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail.html";
+		}
+		return "success.html";
 	}
 
 	@PostMapping("/upload")
@@ -57,6 +67,28 @@ public class ResolverController {
 			e.printStackTrace();
 			return "上传失败";
 		}
+		return "resolver.html";
+	}
+
+	@PostMapping("/download")
+	public String download(String filename) {
+		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		HttpServletResponse response = requestAttributes.getResponse();
+		// 设置信息给客户端不解析
+		String type = new MimetypesFileTypeMap().getContentType(filename);
+		// 设置contenttype，即告诉客户端所发送的数据属于什么类型
+		response.setHeader("Content-type",type);
+		// 设置编码
+		String hehe = null;
+		try {
+			hehe = new String(filename.getBytes("utf-8"), "iso-8859-1");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		// 设置扩展头，当Content-Type 的类型为要下载的类型时 , 这个信息头会告诉浏览器这个文件的名字和类型。
+		response.setHeader("Content-Disposition", "attachment;filename=" + hehe);
+//		FileUtil.download(filename, response);
+
 		return "resolver.html";
 	}
 }

@@ -3,6 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>文件上传</title>
+    <script src="https://unpkg.com/vue@3.0.5/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue-router@4.0.3/dist/vue-router.global.js"></script>
+    <script src="https://unpkg.com/vuex@4.0.0-rc.2/dist/vuex.global.js"></script>
+    <!-- element-plus 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-plus@1.0.2-beta.30/lib/theme-chalk/index.css">
+    <!-- element-plus 引入组件库 -->
+    <script src="https://unpkg.com/element-plus@1.0.2-beta.30/lib/index.full.js"></script>
+    <!-- Ant Design Vue 引入样式
+    <link rel="stylesheet" href="js/antdv/antd.css">-->
+    <!-- Ant Design Vue 引入组件库
+    <script src="js/antdv/antd.min.js"></script>-->
+    <!-- Vant 引入样式文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@next/lib/index.css"/>
+    <!-- Vant 引入组件库 -->
+    <script src="https://cdn.jsdelivr.net/npm/vant@next/lib/vant.min.js"></script>
+<!--    <script src="/templates/js/index.js"></script>-->
 </head>
 <body>
 
@@ -10,5 +26,20 @@
         <input type="file" name="inputFile"/> <br>
         <input type="submit" value="上传"/>
     </form>
+    <div id="counter">
+        Counter: {{ counter }}
+    </div>
+    <script type="text/javascript">
+        const Counter = {
+          data() {
+            return {
+              counter: 0
+            }
+          }
+        };
+
+        const vm = Vue.createApp(Counter).mount('#counter')
+    </script>
 </body>
+
 </html>

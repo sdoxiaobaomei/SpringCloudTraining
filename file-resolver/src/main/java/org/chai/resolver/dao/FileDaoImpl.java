@@ -14,14 +14,18 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.chai.resolver.TimeStampUtil;
 import org.chai.resolver.entity.ResolverResultSet;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipOutputStream;
 
 @Component
 public class FileDaoImpl implements FileDao{
