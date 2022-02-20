@@ -29,6 +29,9 @@ output/**
 # Java compile files
 **/target/**
 
+# static resource files
+**/static/**
+
 # Logs
 logs
 *.log

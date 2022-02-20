@@ -6,12 +6,11 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.chai.resolver.TimeStampUtil;
 import org.chai.resolver.dao.FileDao;
 import org.chai.resolver.entity.ResolverResultSet;
+import org.chai.resolver.entity.vo.OrderResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,7 +30,7 @@ public class ResolverServiceImpl implements ResolverService {
 
 
 	@Override
-	public void resolveOrder(Boolean isYesterday) throws Exception {
+	public List<OrderResultVO> resolveOrder(Boolean isYesterday) throws Exception {
 		File inputDir = new File(inputDirStr);
 		if (!inputDir.exists()) {
 			boolean mkdirs = inputDir.mkdirs();
@@ -49,26 +48,39 @@ public class ResolverServiceImpl implements ResolverService {
 		}
 //		List<Map<String, String>> content = resultSet.getContent();
 		//创建输出文件夹
-		resolveFilter(resultSet);
+		List<File> files = resolveFilter(resultSet);
 		try {
 			moveInputFileToBackup();
 		} catch (IOException e) {
 			System.out.println("移动文件失败：" + e.getLocalizedMessage());
 		}
-
-	}
-	private void resolveFilter(ResolverResultSet resultSet) {
-		filterRemove(resultSet, "订单状态", "已失效", "已失效");
-		filterOutput(resultSet, "推广位名称", "博观达人", "博观");
-		filterOutput(resultSet, "推广位名称", "客户自己的达人", "KS达人", "邦盟达人");
-		filterOutput(resultSet, "推广位名称", "德","德");
-		filterOutput(resultSet, "推广位名称", "橙子","橙子");
+		List<OrderResultVO> resDataList = new ArrayList<>();
+		for (File file : files) {
+			resDataList.add(OrderResultVO.build(file));
+		}
+		return resDataList;
 	}
 
-	private void filterOutput(ResolverResultSet resultSet, String columnName, String outputName, String... keyWords) {
+	@Override
+	public InputStream getFileInputStreamByName(String filename) throws FileNotFoundException {
+		Path path = OUTPUT_DIR_PATH.resolve(TIMESTAMP).resolve(filename);
+		return new FileInputStream(path.toString());
+	}
+
+	private List<File> resolveFilter(ResolverResultSet resultSet) {
+		List<File> outputFileList = new ArrayList<>();
+		outputFileList.add(filterRemove(resultSet, "订单状态", "已失效", "已失效"));
+		outputFileList.add(filterOutput(resultSet, "推广位名称", "博观达人", "博观"));
+		outputFileList.add(filterOutput(resultSet, "推广位名称", "客户自己的达人", "KS达人", "邦盟达人"));
+		outputFileList.add(filterOutput(resultSet, "推广位名称", "德","德"));
+		outputFileList.add(filterOutput(resultSet, "推广位名称", "橙子","橙子"));
+		return outputFileList;
+	}
+
+	private File filterOutput(ResolverResultSet resultSet, String columnName, String outputName, String... keyWords) {
 		List<Map<String, String>> content = resultSet.getContent();
 		if (keyWords == null) {
-			return;
+			throw new IllegalArgumentException("keyWords can't be empty");
 		}
 		List<Map<String, String>> outputRows = new ArrayList<>();
  		for (String keyWord : keyWords) {
@@ -76,14 +88,14 @@ public class ResolverServiceImpl implements ResolverService {
 			content.removeAll(filterRows);
 			outputRows.addAll(filterRows);
 		}
-		exportXls(resultSet.getHeader(), outputRows, outputName);
+		return exportXls(resultSet.getHeader(), outputRows, outputName);
 	}
 
-	private void filterRemove(ResolverResultSet resultSet, String columnName, String keyWord, String outputName) {
+	private File filterRemove(ResolverResultSet resultSet, String columnName, String keyWord, String outputName) {
 		List<Map<String, String>> content = resultSet.getContent();
 		List<Map<String, String>> removeRows = content.stream().filter(row -> row.get(columnName).contains(keyWord)).collect(Collectors.toList());
 		resultSet.setContents(content.stream().filter(row -> !row.get(columnName).contains(keyWord)).collect(Collectors.toList()));
-		exportXls(resultSet.getHeader(), removeRows, outputName);
+		return exportXls(resultSet.getHeader(), removeRows, outputName);
 	}
 
 	private void moveInputFileToBackup() throws IOException {
@@ -105,7 +117,7 @@ public class ResolverServiceImpl implements ResolverService {
 		}
 	}
 
-	private void exportXls(String[] header, List<Map<String, String>> rows, String outputName) {
+	private File exportXls(String[] header, List<Map<String, String>> rows, String outputName) {
 		String timeStamp = TimeStampUtil.getTimeStamp("yyyyMMdd-HHmm");
 		String outputFileName = outputName + "_" + timeStamp + ".xls";
 		if (isYesterday) {
@@ -131,7 +143,7 @@ public class ResolverServiceImpl implements ResolverService {
 		}
 
 		fileDao.writeOutputFile(outputPath, workbook);
-
+		return outputPath.toFile();
 	}
 
 
