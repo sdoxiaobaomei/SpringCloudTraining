@@ -75,7 +75,7 @@ public class ResolverServiceImpl implements ResolverService {
 		outputFileList.add(filterOutput(resultSet, "推广位名称", "博采","博采"));
 		outputFileList.add(filterOutput(resultSet, "推广位名称", "引力达人","引力"));
 		outputFileList.add(filterOutput(resultSet, "推广位名称", "剧星","剧星"));
-		outputFileList.add(filterOutput(resultSet, "推广位名称", "一财达人","财经达人主链"));
+		outputFileList.add(filterOutput(resultSet, "推广位名称", "一财达人","财经"));
 		return outputFileList;
 	}
 
